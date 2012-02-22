@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <title>Demo</title>
+    <script src="jquery/dist/jquery.js"></script>
+    <script src="src/jquery.jrichteqst.js"></script>
+    <script>
+    var r, e;
+    function playground() {
+        r = $.fn.jRichTeQst($('#demotext')[0]),
+        e = r.getElement();
+    }
+    </script>
+  </head>
+  <body onload="playground()">
+    <div id="demotext">This is text.</div>
+  </body>
+</html>
