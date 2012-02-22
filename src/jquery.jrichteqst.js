@@ -1,20 +1,35 @@
 (function( $ ){
 
-  $.fn.jRichTeQst = function(element) {
-    return {
+  $.fn.jRichTeQst = function(node) {
+    var widget = {
 
       setEditable: function(editable) {
-        $(element).attr('contenteditable', editable ? 'true' : 'false');
+        $(node).attr('contenteditable', editable ? 'true' : 'false');
+      },
+
+      isEditable: function() {
+        return $(node).attr('contenteditable') === 'true';
       },
 
       toString: function() {
-        return $(element).text();
-
+        return $(node).text();
       },
 
-      getElement: function() {
-        return element;
+      domNode: function() {
+        return node;
       }
     };
+
+    // event handling
+
+    $(node).click(function() {
+       widget.setEditable(true);
+    });
+
+    $(node).mouseleave(function() {
+      widget.setEditable(false);
+    });
+
+    return widget;
   };
 })( jQuery );
