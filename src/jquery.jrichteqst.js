@@ -94,12 +94,16 @@
             tmpNode;
         for ( i = 0; i < children.length; i++) {
           tmpNode = document.createTextNode(children[i].textContent);
-          if (children[i].nodeType == 1) { // 1 == div, 3 == text
+          if (children[i].nodeType == 1 && children[i].tagName != "A") {
+            // replace div, span, p, ... but not links
             newNode.appendChild(document.createElement('br'));
-            // replace div with new text node, insert text to new text node
           } else if (children[i].nodeType == 3) {
-            // nothing to do?
-          }
+	    if (children[i].textContent == "") {
+              return;
+            }
+          } else {
+	    continue;
+	  }
           newNode.appendChild(tmpNode);
         }
         self.useTextNode(newNode);

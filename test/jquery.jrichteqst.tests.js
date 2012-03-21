@@ -28,9 +28,15 @@ test("attr sets attribute", function() {
 });
 
 test("fixNewlinesChrome fixes newlines", function() {
-  testtext.getTextNode().innerHTML="foo<div>bar</div><div>baz</div>";
+  testtext.getTextNode().innerHTML = "foo<div>bar</div><div>baz</div>";
   testtext.fixNewlinesChrome();
   equal( testtext.getTextNode().innerHTML, "foo<br>bar<br>baz", "div nodes were expected to be replaced by br nodes" );
+});
+
+test("fixNewlinesChrome does not remove links", function() {
+  testtext.getTextNode().innerHTML = "foo <a href=\"google.com\">google</a>";
+  testtext.fixNewlinesChrome();
+  equal( testtext.getTextNode().childNodes[1].tagName, "A", "link should have stayed");
 });
 
 test("setText sets text", function() {
