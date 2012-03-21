@@ -87,7 +87,7 @@
       },
 
       fixNewlinesChrome: function() {
-        var i,
+        var i, j,
             children = self.getTextNode().childNodes,
             newNode = document.createElement('div'),
             tmpNode;
@@ -98,8 +98,10 @@
               // replace div, span, p, ... but not links
               newNode.appendChild(document.createElement('br'));
             } else {
-              newNode.appendChild(children[i]);
-              return;
+              tmpNode = document.createElement('a');
+              $(tmpNode).attr('href', $(children[i]).attr('href'));
+              $(tmpNode).text($(children[i]).text());
+              // FIXME copy all attributes
             }
           } else if (children[i].nodeType == 3) {
 	    if (children[i].textContent == "") {
