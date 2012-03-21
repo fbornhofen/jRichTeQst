@@ -8,11 +8,12 @@
     var r, e;
     function playground() {
         r = $.fn.jRichTeQst($('#demotext')[0]),
+        r.css('height', '150px');
         e = r.domNode();
     }
     </script>
   </head>
   <body onload="playground()">
-    <div id="demotext">This is text.</div>
+    <div id="demotext"></div>
   </body>
 </html>

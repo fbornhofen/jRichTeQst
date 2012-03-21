@@ -1,7 +1,10 @@
 (function( $ ){
 
   $.fn.jRichTeQst = function(node) {
+
     var self = {
+
+      textNode: null,
 
       // DOM Interface
       css: function() {
@@ -16,29 +19,37 @@
         if (arguments.length === 1) {
           return $(self.domNode()).attr(arguments[0]);
         } else {
-          $(this.domNode()).attr(arguments[0], arguments[1])
+          $(this.domNode()).attr(arguments[0], arguments[1]);
         }
       },
 
       setEditable: function(editable) {
-        $(node).attr('contenteditable', editable ? 'true' : 'false');
+        $(self.getTextNode()).attr('contenteditable', 
+            editable ? 'true' : 'false');
+        if (!editable) {
+          self.fixNewlines();
+        }
       },
 
       isEditable: function() {
-        return $(node).attr('contenteditable') === 'true';
+        return $(self.getTextNode()).attr('contenteditable') === 'true';
       },
 
       toString: function() {
-        return $(node).text();
+        return $(self.getTextNode()).text();
       },
 
       domNode: function() {
         return node;
       },
 
+      getTextNode: function() {
+        return self.textNode;  
+      },
+
       getSelectionRange: function() {
 	var sel = rangy.getSelection();
-        if (sel.containsNode(node, true)) {
+        if (sel.containsNode(self.getTextNode(), true)) {
           return sel.getRangeAt(0);
         } else {
           return null;
@@ -59,29 +70,56 @@
         range.setStartAfter(aNode);
         range.setEndAfter(aNode);
       },
+
+      fixNewlines: function() {
+        self.fixNewlinesChrome();
+      },
+
+      fixNewlinesChrome: function() {
+        var i,
+            node = self.domNode(),
+            children = self.getTextNode().childNodes,
+            newNode = document.createElement('div'),
+            tmpNode;
+        for ( i = 0; i < children.length; i++) {
+          tmpNode = document.createTextNode(children[i].textContent);
+          if (children[i].nodeType == 1) { // 1 == div, 3 == text
+            newNode.appendChild(document.createElement('br'));
+            // replace div with new text node, insert text to new text node
+          } else if (children[i].nodeType == 3) {
+            // nothing to do?
+          }
+          newNode.appendChild(tmpNode);
+        }
+        self.initializeTextNode(newNode);
+      },
+
+      initializeEvents: function() {
+        $(self.getTextNode()).click(function() {
+          self.setEditable(true);
+        });
+
+        $(self.getTextNode()).mouseleave(function() {
+          self.setEditable(false);
+        });
+      },
+
+      initializeTextNode: function(aTextNode) {
+        var oldTextNode = self.getTextNode();
+        self.textNode = aTextNode;
+        if (oldTextNode) {
+          self.domNode().replaceChild(aTextNode, oldTextNode);
+        } else {
+	  self.domNode().appendChild(aTextNode);
+	}
+        $(aTextNode).css('height', '100%');     
+        $(aTextNode).css('width', '100%');
+        self.initializeEvents();   
+      }, 
     };
 
-    // event handling
-
-    $(node).click(function() {
-       self.setEditable(true);
-    });
-
-    $(node).mouseleave(function() {
-      self.setEditable(false);
-    });
-
-    $(node).keypress(function(event) {   
-      if (event.which == 13 || event.which == 10) {
-        console.log('enter');
-        event.preventDefault();
-        event.stopPropagation();
-        self.insertAtCursor(document.createElement("br"));
-        return true;
-      }
-      return false;
-    });
-
+    //var browser = 'chrome'; // find out, create dispatch table
+    self.initializeTextNode(document.createElement('div'));
     return self;
   };
 })( jQuery );
