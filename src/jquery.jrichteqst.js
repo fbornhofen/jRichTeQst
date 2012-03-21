@@ -39,6 +39,17 @@
         return $(self.getTextNode()).text();
       },
 
+      getText: function() {
+        return self.getTextNode().innerHTML.replace('<br>', '\n');  
+      },
+
+      setText: function(aString) {
+        // plain text only!
+        var newNode = document.createElement('div');
+        newNode.innerHTML = aString.replace('\n', '<br>');
+        self.useTextNode(newNode);
+      },
+
       domNode: function() {
         return node;
       },
@@ -91,7 +102,7 @@
           }
           newNode.appendChild(tmpNode);
         }
-        self.initializeTextNode(newNode);
+        self.useTextNode(newNode);
       },
 
       initializeEvents: function() {
@@ -104,7 +115,7 @@
         });
       },
 
-      initializeTextNode: function(aTextNode) {
+      useTextNode: function(aTextNode) {
         var oldTextNode = self.getTextNode();
         self.textNode = aTextNode;
         if (oldTextNode) {
@@ -119,7 +130,7 @@
     };
 
     //var browser = 'chrome'; // find out, create dispatch table
-    self.initializeTextNode(document.createElement('div'));
+    self.useTextNode(document.createElement('div'));
     return self;
   };
 })( jQuery );

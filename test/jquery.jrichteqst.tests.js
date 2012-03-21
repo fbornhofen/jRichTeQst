@@ -33,4 +33,14 @@ test("fixNewlinesChrome fixes newlines", function() {
   equal( testtext.getTextNode().innerHTML, "foo<br>bar<br>baz", "div nodes were expected to be replaced by br nodes" );
 });
 
+test("setText sets text", function() {
+  testtext.setText("hello\nworld");
+  equal(testtext.getTextNode().innerHTML, "hello<br>world", "newlines should have been replaced by brs");
+});
+
+test("getText gets text", function() {
+  testtext.getTextNode().innerHTML = "hello<br>world";
+  equal(testtext.getText(), "hello\nworld", "brs should have been replaced by newlines");
+});
+
 }
