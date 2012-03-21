@@ -7,9 +7,16 @@
     <script>
     var r, e;
     function playground() {
-        r = $.fn.jRichTeQst($('#demotext')[0]),
-        r.css('height', '150px');
-        e = r.domNode();
+      r = $.fn.jRichTeQst($('#demotext')[0]),
+      r.css('height', '150px');
+      e = r.domNode();
+    }
+    function addGoogleLink() {
+      var a = document.createElement('a');
+      a.setAttribute('href', 'http://www.google.com');
+      a.innerHTML = 'Google';
+      r.getTextNode().appendChild(a);
+      return a;
     }
     </script>
   </head>

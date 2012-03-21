@@ -88,18 +88,22 @@
 
       fixNewlinesChrome: function() {
         var i,
-            node = self.domNode(),
             children = self.getTextNode().childNodes,
             newNode = document.createElement('div'),
             tmpNode;
         for ( i = 0; i < children.length; i++) {
           tmpNode = document.createTextNode(children[i].textContent);
-          if (children[i].nodeType == 1 && children[i].tagName != "A") {
-            // replace div, span, p, ... but not links
-            newNode.appendChild(document.createElement('br'));
+          if (children[i].nodeType == 1) {
+            if (children[i].tagName != "A") {
+              // replace div, span, p, ... but not links
+              newNode.appendChild(document.createElement('br'));
+            } else {
+              newNode.appendChild(children[i]);
+              return;
+            }
           } else if (children[i].nodeType == 3) {
 	    if (children[i].textContent == "") {
-              return;
+              continue;
             }
           } else {
 	    continue;
