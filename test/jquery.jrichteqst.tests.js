@@ -27,8 +27,10 @@ test("attr sets attribute", function() {
 
 });
 
-//test("fixNewline fixes newlines", function() {
-//  // insert text, set cursor somewhere, send keypress(0x0a)
-//});
+test("fixNewlinesChrome fixes newlines", function() {
+  testtext.getTextNode().innerHTML="foo<div>bar</div><div>baz</div>";
+  testtext.fixNewlinesChrome();
+  equal( testtext.getTextNode().innerHTML, "foo<br>bar<br>baz", "div nodes were expected to be replaced by br nodes" );
+});
 
 }
