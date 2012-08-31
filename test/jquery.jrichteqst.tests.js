@@ -40,13 +40,18 @@ test("fixNewlinesChrome does not remove links", function() {
 });
 
 test("setText sets text", function() {
-  testtext.setText("hello\nworld");
+  testtext.setText("hello\r\nworld");
   equal(testtext.getTextNode().innerHTML, "hello<br>world", "newlines should have been replaced by brs");
 });
 
 test("getText gets text", function() {
   testtext.getTextNode().innerHTML = "hello<br>world";
-  equal(testtext.getText(), "hello\nworld", "brs should have been replaced by newlines");
+  equal(testtext.getText(), "hello\r\nworld", "brs should have been replaced by newlines");
+});
+
+test("getText replaces newlines globally", function() {
+  testtext.getTextNode().innerHTML = "hello<br>tout<br>le<br>monde<br>";
+  equal(testtext.getText(), "hello\r\ntout\r\nle\r\nmonde\r\n");
 });
 
 }

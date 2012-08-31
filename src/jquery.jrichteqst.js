@@ -40,13 +40,13 @@
       },
 
       getText: function() {
-        return self.getTextNode().innerHTML.replace('<br>', '\n');  
+        return self.getTextNode().innerHTML.replace(/<br>/g, '\r\n');  
       },
 
       setText: function(aString) {
         // plain text only!
         var newNode = document.createElement('div');
-        newNode.innerHTML = aString.replace('\n', '<br>');
+        newNode.innerHTML = aString.replace(/\r\n/g, '<br>');
         self.useTextNode(newNode);
       },
 
